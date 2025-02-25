@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Слайдер карточек</title>
+   <style>
+      body {
+         font-family: 'Quicksand', sans-serif;
+         margin: 0;
+         padding: 30px 0;
+         background-color: #ffffff;
+      }
+
+      .main-container {
+         max-width: 1360px;
+         margin: 0 auto;
+         position: relative;
+         overflow: hidden;
+         height: 400px;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+      }
+
+      .slider-wrapper {
+         width: 100%;
+         height: 340px;
+         margin: 0 auto;
+         position: relative;
+         overflow: hidden;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         padding: 10px 10px;
+      }
+
+      .slider-container {
+         display: flex;
+         transition: transform 0.5s ease;
+         gap: 15px;
+         width: max-content;
+         height: 100%;
+         align-items: center;
+         padding: 0 20px;
+      }
+
+      .card {
+         width: 228px;
+         height: 300px;
+         background-color: #fff;
+         border-radius: 10px;
+         overflow: hidden;
+         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+         flex-shrink: 0;
+      }
+
+      .top-section {
+         height: 144px;
+         overflow: hidden;
+      }
+
+      .top-section img {
+         width: 100%;
+         height: 100%;
+         object-fit: cover;
+      }
+
+      .bottom-section {
+         padding: 10px;
+         height: 156px;
+         box-sizing: border-box;
+      }
+
+      .sub-container {
+         display: flex;
+         flex-direction: column;
+         gap: 15px;
+      }
+
+      .subsection:first-child {
+         display: flex;
+         flex-direction: column;
+         gap: 7px;
+      }
+
+      .category {
+         color: #ADADAD;
+         font-size: 12px;
+         font-weight: normal;
+         margin: 0;
+      }
+
+      .product-name {
+         color: #253D4E;
+         font-size: 16px;
+         font-weight: bold;
+         margin: 0;
+      }
+
+      .rating {
+         display: flex;
+         align-items: center;
+         gap: 2px;
+      }
+
+      .star {
+         width: 16px;
+         height: 16px;
+         background-color: #FDC040;
+         clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+      }
+
+      .star.grey {
+         background-color: #D4D4D4;
+      }
+
+      .rating-number {
+         color: #ADADAD;
+         font-size: 11px;
+         font-weight: 500;
+         margin-left: 5px;
+      }
+
+      .brand {
+         color: #ADADAD;
+         font-size: 12px;
+         font-weight: 400;
+         margin: 3px 0 0 0;
+      }
+
+      .by {
+         color: #3BB77E;
+         font-size: 12px;
+         font-weight: 400;
+      }
+
+      .price-button-section {
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+      }
+
+      .price-block {
+         width: 90px;
+         height: 33px;
+         display: flex;
+         align-items: center;
+         gap: 10px;
+      }
+
+      .new-price {
+         color: #3BB77E;
+         font-size: 18px;
+         font-weight: 600;
+         margin: 0;
+      }
+
+      .old-price {
+         color: #ADADAD;
+         font-size: 14px;
+         font-weight: 500;
+         text-decoration: line-through;
+         margin: 0;
+      }
+
+      .button-block {
+         width: 90px;
+         height: 33px;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         gap: 5px;
+         background-color: #DEF9EC;
+         border-radius: 5px;
+         cursor: pointer;
+      }
+
+      .button-block img {
+         width: 20px;
+         height: 20px;
+      }
+
+      .add-text {
+         color: #3BB77E;
+         font-size: 14px;
+         font-weight: 500;
+         margin: 0;
+      }
+
+      .nav-button {
+         width: 46px;
+         height: 46px;
+         background-color: #F2F3F4;
+         border-radius: 50%;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         position: absolute;
+         top: 50%;
+         transform: translateY(-50%);
+         cursor: pointer;
+         z-index: 10;
+      }
+
+      .nav-button.prev {
+         left: 0;
+      }
+
+      .nav-button.next {
+         right: 0;
+      }
+
+      @media (max-width: 480px) {
+         .slider-wrapper {
+            max-width: 228px;
+         }
+      }
+
+      @media (min-width: 481px) and (max-width: 600px) {
+         .slider-wrapper {
+            max-width: calc(2 * 228px + 15px);
+         }
+      }
+
+      @media (min-width: 601px) and (max-width: 767px) {
+         .slider-wrapper {
+            max-width: calc(2 * 228px + 15px);
+         }
+      }
+
+      @media (min-width: 768px) and (max-width: 900px) {
+         .slider-wrapper {
+            max-width: calc(3 * 228px + 2 * 15px);
+         }
+      }
+
+      @media (min-width: 901px) and (max-width: 1024px) {
+         .slider-wrapper {
+            max-width: calc(3 * 228px + 2 * 15px);
+         }
+      }
+
+      @media (min-width: 1025px) and (max-width: 1200px) {
+         .slider-wrapper {
+            max-width: calc(4 * 228px + 3 * 15px);
+         }
+      }
+
+      @media (min-width: 1201px) and (max-width: 1359px) {
+         .slider-wrapper {
+            max-width: calc(4 * 228px + 3 * 15px);
+         }
+      }
+
+      @media (min-width: 1360px) {
+         .slider-wrapper {
+            max-width: calc(5 * 228px + 4 * 15px);
+         }
+      }
+
+      @media (min-width: 1920px) {
+         body {
+            padding: 39px 0;
+         }
+
+         .main-container {
+            max-width: 1880px;
+            height: 520px;
+         }
+
+         .slider-wrapper {
+            max-width: 1772px;
+            height: 442px;
+            padding: 13px 13px;
+         }
+
+         .slider-container {
+            gap: 20px;
+            padding: 0 26px;
+         }
+
+         .card {
+            width: 338px;
+            height: 445px;
+         }
+
+         .top-section {
+            height: 213px;
+         }
+
+         .bottom-section {
+            padding: 15px;
+            height: 232px;
+         }
+
+         .sub-container {
+            gap: 22px;
+         }
+
+         .subsection:first-child {
+            gap: 10px;
+         }
+
+         .category {
+            font-size: 17px;
+         }
+
+         .product-name {
+            font-size: 24px;
+         }
+
+         .star {
+            width: 24px;
+            height: 24px;
+         }
+
+         .rating-number {
+            font-size: 16px;
+            margin-left: 7px;
+         }
+
+         .brand,
+         .by {
+            font-size: 17px;
+         }
+
+         .price-block {
+            width: 134px;
+            height: 49px;
+            gap: 15px;
+         }
+
+         .new-price {
+            font-size: 27px;
+         }
+
+         .old-price {
+            font-size: 21px;
+         }
+
+         .button-block {
+            width: 134px;
+            height: 49px;
+            gap: 7px;
+            border-radius: 7px;
+         }
+
+         .button-block img {
+            width: 30px;
+            height: 30px;
+         }
+
+         .add-text {
+            font-size: 21px;
+         }
+
+         .nav-button {
+            width: 48px;
+            height: 48px;
+         }
+      }
+   </style>
+</head>
+
+<body>
+   <div class="main-container">
+      <div class="nav-button prev" id="prevButton">&#10094;</div>
+      <div class="nav-button next" id="nextButton">&#10095;</div>
+
+      <div class="slider-wrapper">
+         <div class="slider-container" id="sliderContainer"></div>
+      </div>
+   </div>
+
+   <script>
+      const cardsData = [
+         {
+            image: "https://static.tildacdn.com/tild6462-6366-4733-b963-326233393437/Rectangle_19.png",
+            category: "Vegetables",
+            name: "Redish 500g",
+            rating: 4,
+            brand: "Mr.food",
+            newPrice: "$2",
+            oldPrice: "$3.99"
+         },
+         {
+            image: "https://static.tildacdn.com/tild3835-3562-4630-a431-623938613335/Rectangle_19-1.png",
+            category: "Fruits",
+            name: "Potatos 1kg",
+            rating: 5,
+            brand: "Mr.food",
+            newPrice: "$1",
+            oldPrice: "$1.99"
+         },
+         {
+            image: "https://static.tildacdn.com/tild6539-3333-4230-b733-666462393537/Rectangle_19-2.png",
+            category: "Bakery",
+            name: "Tomatos 200g",
+            rating: 3,
+            brand: "Mr.food",
+            newPrice: "$0.30",
+            oldPrice: "$0.99"
+         },
+         {
+            image: "https://static.tildacdn.com/tild3733-6663-4638-a331-366465313136/Rectangle_19-3.png",
+            category: "Dairy",
+            name: "Broccoli 1kg",
+            rating: 4,
+            brand: "Mr.food",
+            newPrice: "$1.50",
+            oldPrice: "$2.99"
+         },
+         {
+            image: "https://static.tildacdn.com/tild3238-6464-4330-b862-316531383039/Rectangle_19-4.png",
+            category: "Meat",
+            name: "Green Beans 250g",
+            rating: 5,
+            brand: "Mr.food",
+            newPrice: "$1",
+            oldPrice: "$1.99"
+         }
+      ];
+
+      function createCard(card) {
+         return `
+            <div class="card">
+               <div class="top-section">
+                  <img src="${card.image}" alt="Фотография">
+               </div>
+               <div class="bottom-section">
+                  <div class="sub-container">
+                     <div class="subsection">
+                        <p class="category">${card.category}</p>
+                        <p class="product-name">${card.name}</p>
+                     </div>
+                     <div class="subsection">
+                        <div class="rating">
+                           ${Array.from({ length: 5 }, (_, i) =>
+            `<span class="star ${i >= card.rating ? 'grey' : ''}"></span>`
+         ).join('')}
+                           <span class="rating-number">(${card.rating})</span>
+                        </div>
+                        <p class="by brand">By <span class="brand">${card.brand}</span></p>
+                     </div>
+                     <div class="subsection price-button-section">
+                        <div class="price-block">
+                           <span class="new-price">${card.newPrice}</span>
+                           <span class="old-price">${card.oldPrice}</span>
+                        </div>
+                        <div class="button-block">
+                           <img src="https://static.tildacdn.com/tild3165-3966-4335-b231-326631373736/icons8--32.png"
+                              alt="Корзина">
+                           <span class="add-text">Add</span>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         `;
+      }
+
+      function initSlider() {
+         const sliderContainer = document.getElementById('sliderContainer');
+         const cardsToShow = calculateCardsToShow();
+         const screenWidth = document.documentElement.clientWidth;
+         const cardWidth = screenWidth >= 1920 ? 338 : 228;
+         const gap = screenWidth >= 1920 ? 20 : 15;
+         const duplicatedCards = [...cardsData, ...cardsData];
+
+         sliderContainer.innerHTML = duplicatedCards.map(createCard).join('');
+         sliderContainer.style.width = `${cardsToShow * cardWidth + (cardsToShow - 1) * gap}px`;
+      }
+
+      function calculateCardsToShow() {
+         const screenWidth = document.documentElement.clientWidth;
+         if (screenWidth < 480) return 1;
+         if (screenWidth < 600) return 2;
+         if (screenWidth < 768) return 2;
+         if (screenWidth < 900) return 3;
+         if (screenWidth < 1024) return 3;
+         if (screenWidth < 1200) return 4;
+         if (screenWidth < 1360) return 4;
+         if (screenWidth < 1920) return 5;
+         return 5;
+      }
+
+      initSlider();
+
+      let currentIndex = 0;
+      const sliderContainer = document.getElementById('sliderContainer');
+
+      document.getElementById('prevButton').addEventListener('click', () => {
+         const screenWidth = document.documentElement.clientWidth;
+         const cardSize = screenWidth >= 1920 ? 358 : 243;
+
+         if (currentIndex === 0) {
+            currentIndex = cardsData.length;
+            sliderContainer.style.transition = 'none';
+            sliderContainer.style.transform = `translateX(${-currentIndex * cardSize}px)`;
+            setTimeout(() => {
+               sliderContainer.style.transition = 'transform 0.5s ease';
+               currentIndex--;
+               updateSlider();
+            }, 0);
+         } else {
+            currentIndex--;
+            updateSlider();
+         }
+      });
+
+      document.getElementById('nextButton').addEventListener('click', () => {
+         const screenWidth = document.documentElement.clientWidth;
+         const cardSize = screenWidth >= 1920 ? 358 : 243;
+
+         if (currentIndex === cardsData.length) {
+            currentIndex = 0;
+            sliderContainer.style.transition = 'none';
+            sliderContainer.style.transform = `translateX(0)`;
+            setTimeout(() => {
+               sliderContainer.style.transition = 'transform 0.5s ease';
+               currentIndex++;
+               updateSlider();
+            }, 0);
+         } else {
+            currentIndex++;
+            updateSlider();
+         }
+      });
+
+      function updateSlider() {
+         const screenWidth = document.documentElement.clientWidth;
+         const cardWidth = screenWidth >= 1920 ? 338 : 228;
+         const gap = screenWidth >= 1920 ? 20 : 15;
+         const offset = -currentIndex * (cardWidth + gap);
+         sliderContainer.style.transform = `translateX(${offset}px)`;
+      }
+
+      window.addEventListener('resize', () => {
+         initSlider();
+         updateSlider();
+      });
+   </script>
+</body>
+
+</html>
